@@ -1,25 +1,32 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Hotel, Calendar, DollarSign, Users } from "lucide-react";
+import { Hotel, CalendarCheck, TrendingUp, Percent } from "lucide-react";
 
 interface StatCardProps {
   title: string;
   value: string;
+  subtitle: string;
   icon: typeof Hotel;
   trend?: string;
+  trendUp?: boolean;
 }
 
-const StatCard = ({ title, value, icon: Icon, trend }: StatCardProps) => (
-  <Card className="shadow-md border-border hover:shadow-lg transition-all">
+const StatCard = ({ title, value, subtitle, icon: Icon, trend, trendUp }: StatCardProps) => (
+  <Card className="shadow-sm border-border hover:shadow-md transition-all group">
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-sm font-medium text-muted-foreground">
         {title}
       </CardTitle>
-      <Icon className="h-5 w-5 text-primary" />
+      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
+        <Icon className="h-5 w-5 text-primary" />
+      </div>
     </CardHeader>
     <CardContent>
-      <div className="text-3xl font-bold text-foreground">{value}</div>
+      <div className="text-3xl font-bold text-foreground mb-1">{value}</div>
+      <p className="text-sm text-muted-foreground">{subtitle}</p>
       {trend && (
-        <p className="text-xs text-muted-foreground mt-1">{trend}</p>
+        <div className={`text-xs mt-2 font-medium ${trendUp ? 'text-emerald-600' : 'text-muted-foreground'}`}>
+          {trend}
+        </div>
       )}
     </CardContent>
   </Card>
@@ -29,28 +36,30 @@ export const DashboardStats = () => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        title="Total Rooms"
+        title="Room Status"
         value="48"
+        subtitle="12 rooms ready to book"
         icon={Hotel}
-        trend="12 available"
       />
       <StatCard
-        title="Today's Check-ins"
+        title="Today's Arrivals"
         value="8"
-        icon={Calendar}
-        trend="5 pending"
+        subtitle="5 guests checking in soon"
+        icon={CalendarCheck}
       />
       <StatCard
-        title="Revenue (MTD)"
+        title="This Month"
         value="$24,500"
-        icon={DollarSign}
-        trend="+12% from last month"
+        subtitle="Revenue from bookings"
+        icon={TrendingUp}
+        trend="↑ 12% vs last month"
+        trendUp={true}
       />
       <StatCard
-        title="Occupancy Rate"
+        title="Occupancy"
         value="75%"
-        icon={Users}
-        trend="36 rooms occupied"
+        subtitle="36 rooms currently occupied"
+        icon={Percent}
       />
     </div>
   );
